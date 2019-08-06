@@ -1,4 +1,15 @@
 class RoomsController < ApplicationController
+  before_action :load_room, only: :destroy
+  before_action :current_is_admin, only: :destroy
+
+  def destroy
+    if @room.administrators.count > 1
+      render json: {status: "fail"}
+      return
+    end
+    render json: {status: "success"} if room.destroy
+  end
+
   def create
     @room = Room.new room_params
     if @room.save
