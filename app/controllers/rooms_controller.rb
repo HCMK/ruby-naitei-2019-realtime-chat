@@ -4,11 +4,17 @@ class RoomsController < ApplicationController
     if @room.save
       @room.admins.create user_id: current_user.id
       @room.join_rooms.create user_id: current_user.id
-      flash[:success] = "Create room success!"
-      redirect_to root_path
+      flash[:success] = t(".created")
     else
-      flash[:danger] = "Info invalid! Try again!"
+      flash[:danger] = t(".create_error")
     end
+    redirect_to root_path
+  end
+
+  def show
+    @current_room = Room.find_by(id: params[:id])
+    @invites = current_user.invites
+    render "static_pages/home"
   end
 
   private

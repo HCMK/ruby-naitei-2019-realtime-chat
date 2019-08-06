@@ -4,7 +4,6 @@ $(document).ready(function () {
 
 function flash_toastr(){
   $flash = $(".flash_msg");
-  console.log($flash);
   $i=0;
   for($i=0;$i<$flash.length;$i++)
   {

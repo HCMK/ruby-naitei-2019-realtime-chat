@@ -22,12 +22,12 @@ ActiveRecord::Schema.define(version: 2019_08_02_085926) do
   end
 
   create_table "invites", force: :cascade do |t|
-    t.string "user_email"
-    t.string "invite_digest"
     t.integer "room_id"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["room_id"], name: "index_invites_on_room_id"
+    t.index ["user_id"], name: "index_invites_on_user_id"
   end
 
   create_table "join_rooms", force: :cascade do |t|

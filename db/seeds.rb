@@ -12,3 +12,10 @@ user.email = "user@user.com"
 user.password = "123456"
 user.confirmed_at = Time.now
 user.save!
+
+user2 = User.new
+user2.name = "user2"
+user2.email = "user2@user.com"
+user2.password = "123456"
+user2.confirmed_at = Time.now
+user2.save!
