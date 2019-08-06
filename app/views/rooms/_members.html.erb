@@ -1,53 +1,25 @@
 <div class="box box-danger">
   <div class="box-header with-border">
-    <h3 class="box-title">Members</h3>
+    <h3 class="box-title"><%= t ".members" %></h3>
     <div class="box-tools pull-right">
+      <button class="btn btn-box-tool" data-toggle="modal" data-target="#InviteModal">
+        <%= t ".invite" %>
+      </button>
       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
       </button>
     </div>
   </div>
   <div class="box-body no-padding">
     <ul class="users-list clearfix">
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Alexander Pierce</a>
-        <span class="users-list-date">Today</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Norman</a>
-        <span class="users-list-date">Yesterday</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Jane</a>
-        <span class="users-list-date">12 Jan</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">John</a>
-        <span class="users-list-date">12 Jan</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Alexander</a>
-        <span class="users-list-date">13 Jan</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Sarah</a>
-        <span class="users-list-date">14 Jan</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Nora</a>
-        <span class="users-list-date">15 Jan</span>
-      </li>
-      <li>
-        <img src="assets/avatar.jpeg" alt="">
-        <a class="users-list-name" href="#">Nadia</a>
-        <span class="users-list-date">15 Jan</span>
-      </li>
+      <% @current_room.join_rooms.each do |join| %>
+        <li>
+          <%= image_tag "" %>
+          <span class="users-list-name"><%= join.user.name %></span>
+          <span class="users-list-date">
+            <%= time_ago_in_words(join.created_at) %>
+          </span>
+        </li>
+      <% end %>
     </ul>
   </div>
 </div>

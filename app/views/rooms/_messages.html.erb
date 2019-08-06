@@ -1,45 +1,16 @@
-<div class="direct-chat-msg">
-  <div class="direct-chat-info clearfix">
-    <span class="direct-chat-name pull-left">Alexander Pierce</span>
-    <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+<% @current_room.messages.each do |msg| %>
+  <div class="direct-chat-msg">
+    <div class="direct-chat-info clearfix">
+      <span class="direct-chat-name pull-left">
+        <%= msg.user.name %>
+      </span>
+      <span class="direct-chat-timestamp pull-right">
+        <%= time_ago_in_words(msg.created_at) %>
+      </span>
+    </div>
+    <img class="direct-chat-img" src="" alt="">
+    <div class="direct-chat-text">
+      <%= smg.content %>
+    </div>
   </div>
-  <img class="direct-chat-img" src="assets/avatar.jpeg" alt="">
-  <div class="direct-chat-text">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </div>
-</div>
-<div class="direct-chat-msg right">
-  <div class="direct-chat-info clearfix">
-    <span class="direct-chat-name pull-right">Sarah Bullock</span>
-    <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-  </div>
-  <img class="direct-chat-img" src="assets/avatar.jpeg" alt="">
-  <div class="direct-chat-text">
-    You better believe it!
-  </div>
-</div>
-<div class="direct-chat-msg">
-  <div class="direct-chat-info clearfix">
-    <span class="direct-chat-name pull-left">Alexander Pierce</span>
-    <span class="direct-chat-timestamp pull-right">23 Jan 5:37 pm</span>
-  </div>
-  <img class="direct-chat-img" src="assets/avatar.jpeg" alt="">
-  <div class="direct-chat-text">
-    Working with AdminLTE on a great new app! Wanna join?
-  </div>
-</div>
-<div class="direct-chat-msg right">
-  <div class="direct-chat-info clearfix">
-    <span class="direct-chat-name pull-right">Sarah Bullock</span>
-    <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
-  </div>
-  <img class="direct-chat-img" src="assets/avatar.jpeg" alt="">
-  <div class="direct-chat-text">
-    I would love to.
-  </div>
-</div>
+<% end %>

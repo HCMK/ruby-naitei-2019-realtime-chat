@@ -31,3 +31,24 @@
 
 en:
   hello: "Hello world"
+  rooms:
+    create:
+      created: "Create room success!"
+      create_error: "Info invalid! Try again!"
+    description:
+      description: "Description"
+    members:
+      members: "Members"
+      invite: "Invite"
+  layouts:
+    header:
+      create_room: "Create room"
+      new_contact: "New contact"
+      you_have: "You have"
+      inviteds: "inviteds"
+    sidebar:
+      online: "Online"
+  static_pages:
+    modal:
+      create: "Create"
+      close: "Close"

@@ -6,6 +6,7 @@
 
     <div class="content-wrapper">
       <div class="content">
+        <% if(@current_room) %>
         <div class="row vh-87">
           <div class="col-md-8 h-100">
             <%= render "rooms/chatting" %>
@@ -14,6 +15,14 @@
             <%= render "rooms/room_info" %>
           </div>
         </div>
+        <% else %>
+          <p>You haven't friend or group!</p>
+          <p>
+            <%= link_to t(".add_contact"), "", data: {toggle: "modal",
+                target: "#NewContactModal"}, title: "new contact" %>
+             to chatting
+          </p>
+        <% end %>
       </div>
     </div>
   </div>
