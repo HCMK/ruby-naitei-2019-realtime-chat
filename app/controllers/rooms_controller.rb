@@ -12,7 +12,12 @@ class RoomsController < ApplicationController
   end
 
   def show
-    @current_room = Room.find_by(id: params[:id])
+    $current_room = Room.find_by(id: params[:id])
+    if !$current_room.users.include?(current_user)
+      redirect_to root_path
+      return
+    end
+    @invites = current_user.invites
     render "static_pages/home"
   end
 

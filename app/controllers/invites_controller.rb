@@ -1,7 +1,20 @@
 class InvitesController < ApplicationController
   def create
     @invite = Invite.new invite_params
-    render json: {data: @invite} if @invite.save
+    user = User.find_by id: params[:user_id]
+    room = Room.find_by id: params[:room_id]
+    if room.users.include? user
+      render json: {data: nil}
+      return
+    end
+    if @invite.save
+      ActionCable.server.broadcast "users_#{user.id}",
+        room: room.name,
+        id: @invite.id
+      render json: {data: @invite}
+    else
+      render json: {data: nil}
+    end
   end
 
   private

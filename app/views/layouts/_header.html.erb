@@ -100,11 +100,13 @@
           <ul class="dropdown-menu">
             <li class="header">
               <%= t ".you_have" %>
-              <span class="invite-count"><%= @invites.count %></span>
+              <span class="invite-count" id="invite_count">
+                <%= @invites.count %>
+              </span>
               <%= t ".inviteds" %>
             </li>
             <li>
-              <ul class="menu">
+              <ul class="menu" id="invite_menu">
                 <% @invites.each do |invite| %>
                 <li class="invite_element p-10 cursor-pointer"
                   value="<%= invite.id %>">

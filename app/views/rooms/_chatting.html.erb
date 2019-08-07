@@ -1,10 +1,10 @@
 
 <div class="box box-warning direct-chat direct-chat-warning h-100">
   <div class="box-header with-border h-8">
-    <h3 class="box-title"><%= @current_room.name %></h3>
+    <h3 class="box-title"><%= $current_room.name %></h3>
   </div>
   <div class="box-body h-82">
-    <div class="direct-chat-messages h-100">
+    <div class="direct-chat-messages h-100" id="message_list">
       <%= render "rooms/messages" %>
     </div>
   </div>

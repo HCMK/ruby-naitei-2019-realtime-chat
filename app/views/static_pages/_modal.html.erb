@@ -44,7 +44,7 @@
             <label>Invite username</label>
             <input type="text" class="form-control" name="inviteName" id="inviteName">
           </div>
-          <%= hidden_field_tag "inviteRoomId", @current_room.id if @current_room %>
+          <%= hidden_field_tag "inviteRoomId", $current_room.id if $current_room %>
           <table class="table" id="inviteResultList">
           </table>
         </div>

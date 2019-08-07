@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  scroll_end();
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -56,7 +57,8 @@ $(document).ready(function () {
           room_id: room_id
         }
     }).done(function(result) {
-      toastr.success('Invite success!');
+      if (result.data) toastr.success('Invite success!');
+      else toastr.warning('Invite fail!');
     });
   })
 
@@ -76,4 +78,60 @@ $(document).ready(function () {
       $(".invite-count").html(result.count);
     });
   })
+
+  $(document).on('click', '#send_new_message', function (){
+    send_new_message();
+  })
+
+  $(document).on('keypress', '#new_message_input', function (e){
+    if(e.which == 13){
+      send_new_message();
+    }
+  })
 })
+
+function send_new_message(){
+  var content = $("#new_message_input").val();
+  var room_id = $("#inviteRoomId").val();
+  $.ajax({
+      url: '/messages',
+      type: 'POST',
+      dataType: 'JSON',
+      data: {
+        content: content,
+        room_id: room_id
+      }
+  }).done(function(result) {
+    $('#new_message_input').val('');
+  });
+}
+
+function update_mesage(result){
+  var html = '<div class=\"direct-chat-msg\">'
+              + '<div class=\"direct-chat-info clearfix\">'
+              + '<span class=\"direct-chat-name pull-left\">'
+              + result.user
+              + '</span>'
+              + '<span class=\"direct-chat-timestamp pull-right\">'
+              + result.data.created_at
+              + '</span>'
+              + '</div>'
+              + '<img class=\"direct-chat-img\" src=\"\">'
+              + '<div class=\"direct-chat-text\">'
+              + result.data.content
+              + '</div>'
+              + '</div>';
+    $('#message_list').append(html);
+    scroll_end();
+}
+<% if $current_room %>
+App.cable.subscriptions.create({channel: 'RoomChannel', room: "<%= $current_room.id %>"}, {  
+  received: function(data) {
+    update_mesage(data);
+  },
+});
+<% end %>
+function scroll_end() {
+  var msg_list = document.getElementById('message_list');
+  msg_list.scrollTop = msg_list.scrollHeight;
+}

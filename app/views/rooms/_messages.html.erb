@@ -1,4 +1,4 @@
-<% @current_room.messages.each do |msg| %>
+<% $current_room.messages.each do |msg| %>
   <div class="direct-chat-msg">
     <div class="direct-chat-info clearfix">
       <span class="direct-chat-name pull-left">
@@ -10,7 +10,7 @@
     </div>
     <img class="direct-chat-img" src="" alt="">
     <div class="direct-chat-text">
-      <%= smg.content %>
+      <%= msg.content %>
     </div>
   </div>
 <% end %>

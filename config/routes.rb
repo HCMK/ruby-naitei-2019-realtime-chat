@@ -5,5 +5,7 @@ Rails.application.routes.draw do
   resources :rooms, only: [:create, :show]
   resources :invites, only: :create
   resources :join_rooms, only: :create
+  resources :messages, only: :create
   root "static_pages#home"
+  mount ActionCable.server => '/cable'
 end
