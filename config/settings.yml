@@ -4,3 +4,5 @@ room:
   type:
     public_room: 0
     private_room: 1
+  discription:
+      max_length: 140

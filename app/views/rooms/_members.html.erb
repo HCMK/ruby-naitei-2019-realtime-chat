@@ -11,7 +11,7 @@
   </div>
   <div class="box-body no-padding">
     <ul class="users-list clearfix">
-      <% @current_room.join_rooms.each do |join| %>
+      <% $current_room.join_rooms.each do |join| %>
         <li>
           <%= image_tag "" %>
           <span class="users-list-name"><%= join.user.name %></span>

@@ -6,4 +6,4 @@
 //= require admin-lte/dist/js/app.js
 //= require toastr
 //= require cable.js
-//= require script.js
+//= require script

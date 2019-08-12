@@ -100,7 +100,9 @@
           <ul class="dropdown-menu">
             <li class="header">
               <%= t ".you_have" %>
-              <span class="invite-count" id="invite_count"><%= @invites.count %></span>
+              <span class="invite-count" id="invite_count">
+                <%= @invites.count %>
+              </span>
               <%= t ".inviteds" %>
             </li>
             <li>

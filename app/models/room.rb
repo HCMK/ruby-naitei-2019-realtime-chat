@@ -7,5 +7,6 @@ class Room < ApplicationRecord
   has_many :users, through: :join_rooms
   scope :recent, ->{order new_message: :desc}
   validates :name, presence: true
-  validates :description, presence: true, length: {maximum: 140}
+  validates :description, presence: true,
+    length: {maximum: Settings.room.discription.max_length}
 end
