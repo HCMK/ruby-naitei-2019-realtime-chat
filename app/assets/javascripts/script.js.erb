@@ -1,4 +1,5 @@
-$(document).ready(function () {
+// $(document).ready(function () {
+$(document).on('turbolinks:load', function(){
   scroll_end();
   $.ajaxSetup({
     headers: {
@@ -62,7 +63,73 @@ $(document).ready(function () {
     });
   })
 
-  $(".invite_element").on("click", function () {
+  $(document).on('click', '.admin-btn', function () {
+    $.ajax({
+        url: '/admins',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          user_id: $(this).val(),
+          id: $("#inviteRoomId").val()
+        }
+    }).done(function(result) {
+      if (result.data) toastr.success('Add admin success!');
+      else toastr.warning('Add admin fail!');
+    });
+  })
+
+  $('.delete-btn').on('click', function () {
+    $.ajax({
+        url: '/join_rooms/'+$("#inviteRoomId").val()+'/'+$(this).val(),
+        type: 'DELETE'
+    }).done(function(result) {
+      if (result.data) toastr.success('Delete success!');
+      else toastr.warning('delete fail!');
+    });
+  })
+
+  $('#delete_room').on('click', function () {
+    $.ajax({
+        url: '/rooms/'+$("#inviteRoomId").val(),
+        type: 'DELETE'
+    }).done(function(result) {
+      if (result.data) {toastr.success('Delete success!'); location.href='/'}
+      else toastr.warning('delete fail!');
+    });
+  })
+
+  $('#become_user_leave').on('click', function () {
+    if ($(this).text() == 'Leave Room') leave_room()
+    else become_user();
+  })
+
+  function become_user() {
+    $.ajax({
+        url: '/admins/'+$("#inviteRoomId").val(),
+        type: 'DELETE'
+    }).done(function(result) {
+      if (result.data){
+        location.reload();
+        toastr.success('success!');
+      }
+      else toastr.warning('fail!');
+    });
+  }
+
+  function leave_room() {
+    $.ajax({
+        url: '/join_rooms/'+$("#inviteRoomId").val()+'/'+$('#UserID').val(),
+        type: 'DELETE'
+    }).done(function(result) {
+      if (result.data){
+        toastr.success('success!');
+        location.href = '/';
+      }
+      else toastr.warning('fail!');
+    });
+  }
+
+  $(document).on("click",".invite_element", function () {
     var invite_element = $(this);
     var invite_id = $(this).val();
     $.ajax({
@@ -74,6 +141,7 @@ $(document).ready(function () {
         }
     }).done(function(result) {
       toastr.success('Join room \"'+result.room_name+'\" success!');
+      location.href  = '/rooms/'+ result.id;
       invite_element.remove();
       $(".invite-count").html(result.count);
     });
@@ -92,6 +160,8 @@ $(document).ready(function () {
 
 function send_new_message(){
   var content = $("#new_message_input").val();
+  if (content === "" ) return;
+  $('#new_message_input').val('').attr("disabled", true); 
   var room_id = $("#inviteRoomId").val();
   $.ajax({
       url: '/messages',
@@ -102,7 +172,7 @@ function send_new_message(){
         room_id: room_id
       }
   }).done(function(result) {
-    $('#new_message_input').val('');
+    $('#new_message_input').attr("disabled", false); 
   });
 }
 
@@ -110,13 +180,15 @@ function update_mesage(result){
   var html = '<div class=\"direct-chat-msg\">'
               + '<div class=\"direct-chat-info clearfix\">'
               + '<span class=\"direct-chat-name pull-left\">'
-              + result.user
+              + result.user.name
               + '</span>'
               + '<span class=\"direct-chat-timestamp pull-right\">'
               + result.data.created_at
               + '</span>'
               + '</div>'
-              + '<img class=\"direct-chat-img\" src=\"\">'
+              + '<img class=\"direct-chat-img\" src=\"'
+              + result.user.avatar
+              +'\">'
               + '<div class=\"direct-chat-text\">'
               + result.data.content
               + '</div>'
@@ -124,12 +196,75 @@ function update_mesage(result){
     $('#message_list').append(html);
     scroll_end();
 }
+
+function new_member(result){
+  var html = '<li>'
+    +'<img src="'
+    +result.user.avatar
+    +'" />'
+    + '<span class="users-list-name">'
+    +result.user.name
+    + '</span></li>';
+    $('#member_list').append(html);
+}
+
+function add_admin(result){
+  $('#admin_'+result.user.id).html("Admin");
+  if(result.user.id == $("#UserID").val()){
+    location.reload();
+  }
+}
+
+function delete_admin(result){
+  var html = '';
+  if ($('#UserAdmin').length > 0){
+    html ="<button class='delete-btn btn-danger' value='"
+    +result.user.id
+    +"'>Delete</button>"
+    +"<button class='admin-btn btn-warning' value='"
+    +result.user.id
+    +"'>Admin</button>"
+  }
+  $('#admin_'+result.user.id).html(html);
+}
+
+function delete_member(result){
+  $("#members_"+result.user.id).remove();
+  if(result.user.id == $("#UserID").val()) location.href = '/';
+}
+
 <% if $current_room %>
-App.cable.subscriptions.create({channel: 'RoomChannel', room: "<%= $current_room.id %>"}, {  
-  received: function(data) {
-    update_mesage(data);
-  },
-});
+var channel;
+$(document).on('turbolinks:load', function(){
+  if (channel) channel.unsubscribe();
+  channel = App.cable.subscriptions.create({channel: 'RoomChannel', room: $("#inviteRoomId").val()}, {  
+    received: function(data) {
+      console.log(data.type);
+      switch (data.type){
+        case "new_message":
+          update_mesage(data);
+          break;
+        case "new_member":
+          new_member(data);
+          break;
+        case "delete_member":
+          delete_member(data);
+          break;
+        case "delete_room":
+          location.href  = '/';
+          break;
+        case "add_admin":
+          add_admin(data);
+          break;
+        case "delete_admin":
+          delete_admin(data);
+          break;
+      }
+    },
+  });
+  console.log();
+  scroll_end();
+}); 
 <% end %>
 function scroll_end() {
   var msg_list = document.getElementById('message_list');

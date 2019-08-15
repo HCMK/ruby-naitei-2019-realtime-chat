@@ -8,7 +8,7 @@
         <%= time_ago_in_words(msg.created_at) %>
       </span>
     </div>
-    <img class="direct-chat-img" src="" alt="">
+    <img class="direct-chat-img" src="<%= msg.user.avatar %>" alt="">
     <div class="direct-chat-text">
       <%= msg.content %>
     </div>

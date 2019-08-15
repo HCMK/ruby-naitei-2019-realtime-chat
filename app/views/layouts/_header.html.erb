@@ -17,79 +17,6 @@
             <i class="fa fa-user-plus"></i>
           <% end %>
         </li>
-        <li class="dropdown messages-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-envelope"></i>
-            <span class="label label-success">4</span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <ul class="menu">
-                <li>
-                  <a href="#">
-                    <div class="pull-left">
-                      <img src="" class="img-circle" alt="">
-                    </div>
-                    <h4>
-                      Support Team
-                      <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                    </h4>
-                    <p>Why not buy a new awesome theme?</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <div class="pull-left">
-                      <img src="" class="img-circle" alt="">
-                    </div>
-                    <h4>
-                      AdminLTE Design Team
-                      <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                    </h4>
-                    <p>Why not buy a new awesome theme?</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <div class="pull-left">
-                      <img src="" class="img-circle" alt="">
-                    </div>
-                    <h4>
-                      Developers
-                      <small><i class="fa fa-clock-o"></i> Today</small>
-                    </h4>
-                    <p>Why not buy a new awesome theme?</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <div class="pull-left">
-                      <img src="" class="img-circle" alt="">
-                    </div>
-                    <h4>
-                      Sales Department
-                      <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                    </h4>
-                    <p>Why not buy a new awesome theme?</p>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <div class="pull-left">
-                      <img src="" class="img-circle" alt="">
-                    </div>
-                    <h4>
-                      Reviewers
-                      <small><i class="fa fa-clock-o"></i> 2 days</small>
-                    </h4>
-                    <p>Why not buy a new awesome theme?</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="footer"><a href="#">See All Messages</a></li>
-          </ul>
-        </li>
         <li class="dropdown notifications-menu">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bell"></i>
@@ -120,12 +47,16 @@
         <li class="dropdown user user-menu">
           <%= link_to "#", class: "dropdown-toggle",
             data: {toggle: "dropdown"} do %>
-            <%= image_tag "", class: "user-image" %>
+            <%= image_tag current_user.avatar||"", class: "user-image" %>
             <span class="hidden-xs"><%= current_user.name %></span>
+            <%= hidden_field_tag "UserID", current_user.id %>
+            <% if $current_room.administrators.include? current_user %>
+            <%= hidden_field_tag "UserAdmin" %>
+            <% end %>
           <% end %>
           <ul class="dropdown-menu">
             <li class="user-header">
-              <img src="" class="img-circle" alt="">
+              <img src=<%= current_user.avatar||'' %> class="img-circle" alt="">
               <p>
                 <%= current_user.name %>
                 <small>Member since Nov. 2012</small>

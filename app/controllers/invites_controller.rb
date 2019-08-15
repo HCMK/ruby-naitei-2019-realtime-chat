@@ -10,7 +10,8 @@ class InvitesController < ApplicationController
     if @invite.save
       ActionCable.server.broadcast "users_#{user.id}",
         room: room.name,
-        id: @invite.id
+        id: @invite.id,
+        type: "invite"
       render json: {data: @invite}
     else
       render json: {data: nil}

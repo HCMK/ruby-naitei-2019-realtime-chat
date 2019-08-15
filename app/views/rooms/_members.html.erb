@@ -10,13 +10,18 @@
     </div>
   </div>
   <div class="box-body no-padding">
-    <ul class="users-list clearfix">
+    <ul class="users-list clearfix" id="member_list">
       <% $current_room.join_rooms.each do |join| %>
-        <li>
-          <%= image_tag "" %>
+        <li id="members_<%=join.user.id%>">
+          <%= image_tag join.user.avatar||"" %>
           <span class="users-list-name"><%= join.user.name %></span>
-          <span class="users-list-date">
-            <%= time_ago_in_words(join.created_at) %>
+          <span id="admin_<%= join.user.id %>">
+          <% if $current_room.administrators.include?(join.user) %>
+            Admin
+          <% elsif $current_room.administrators.include?(@current_user) %>
+            <button class='delete-btn btn-danger' value='<%=join.user.id%>'>Delete</button>
+            <button class='admin-btn btn-warning' value='<%=join.user.id%>'>Admin</button>
+          <% end %>
           </span>
         </li>
       <% end %>

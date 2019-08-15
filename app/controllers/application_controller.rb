@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
 
   def load_room
     @room = Room.find_by id: params[:id]
-    return if room
-    render json: {status: "fail"}
+    return if @room
+    render json: {data: nil}
   end
 
   def is_admin? user
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
 
   def current_is_admin
     return if is_admin? current_user
-    render json: {status: "fails"}
+    render json: {data: nil}
   end
 
   def in_room? user

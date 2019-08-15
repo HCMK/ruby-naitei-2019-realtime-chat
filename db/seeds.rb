@@ -6,16 +6,26 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-user = User.new
-user.name = "user"
-user.email = "user@user.com"
-user.password = "123456"
-user.confirmed_at = Time.now
-user.save!
+20.times do |n|
+  name = "a#{n+1}"
+  email = "a#{n+1}@a.a"
+  password = "123123"
+  avatar = "https://www.gravatar.com/avatar/#{n}?d=monsterid"
+  User.create! name: name,
+               email: email,
+               password: password,
+               confirmed_at: Time.zone.now,
+               avatar: avatar
+end
 
-user2 = User.new
-user2.name = "user2"
-user2.email = "user2@user.com"
-user2.password = "123456"
-user2.confirmed_at = Time.now
-user2.save!
+10.times do |n|
+  name = "Room #{n+1}"
+  r = Room.create! name: name,
+                description: "this is room #{n+1}"
+  10.times do |n|
+    if n < 4
+      r.administrators << User.find(n+1)
+    end
+    r.users << User.find(n+1)
+  end
+end

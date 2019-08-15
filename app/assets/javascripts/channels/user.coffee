@@ -10,5 +10,8 @@ App.user = App.cable.subscriptions.create 'UserChannel',
     $("#invite_menu").append('<li class="invite_element p-10 cursor-pointer"
                   value="'+data.id+'">
                   Invite to ' +data.room+'</li>')
-    count = $('.invite-count')[0]
-    count.textContent = parseInt(count.textContent)+1
+    count = $('.invite-count')
+    num =  parseInt(count[0].textContent)+1
+    count[0].textContent = num
+    count[1].textContent = num
+    toastr.success('Invited to '+data.room)

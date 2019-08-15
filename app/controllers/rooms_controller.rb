@@ -4,10 +4,14 @@ class RoomsController < ApplicationController
 
   def destroy
     if @room.administrators.count > 1
-      render json: {status: "fail"}
+      render json: {data: nil}
       return
     end
-    render json: {status: "success"} if room.destroy
+    if @room.destroy
+      render json: {data: "success"}
+      ActionCable.server.broadcast "rooms_#{@room.id}",
+          type: "delete_room"
+    end
   end
 
   def create
@@ -23,8 +27,8 @@ class RoomsController < ApplicationController
   end
 
   def show
-    $current_room = Room.find_by(id: params[:id])
-    if !$current_room.users.include?(current_user)
+    $current_room = Room.find_by id: params[:id]
+    if $current_room.nil? || !$current_room.users.include?(current_user)
       redirect_to root_path
       return
     end
